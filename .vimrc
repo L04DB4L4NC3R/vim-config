@@ -17,9 +17,9 @@ set mouse=a
 " Mapping for fast quit without save
 noremap <Backspace> :q<cr>
 noremap <c-h> :q<cr>
-noremap gc :GoCallers<cr>
-noremap gi :GoImplements<cr>
-noremap gr :GoReferrers<cr>
+" TODO: noremap gc :GoCallers<cr>
+" TODO: noremap gi :GoImplements<cr>
+" TODO: noremap gr :GoReferrers<cr>
 noremap ff :lnext<cr>
 noremap fb :lprev<cr>
 noremap fc :cclose<cr> :lclose<cr>
@@ -50,7 +50,7 @@ set bg=dark
 " colorscheme dracula
  
 " -- Open GoDef in different pane
-cnoreabbrev gd GoDef
+" TODO: cnoreabbrev gd GoDef
  
 function SplitAndDef()
 				split | :GoDef
@@ -237,3 +237,21 @@ nnoremap <leader>f :NERDTreeFind<CR>
  
 " One trick I like to use a lot is to search for the current word under the cursor in the files. I first press * so that the word is selected. Then I use this empty pattern to search for it: :vim // *.cpp
  
+
+" NOTE: coc
+" use <tab> for trigger completion and navigate to the next complete item
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<Tab>" :
+      \ coc#refresh()
+set nobackup
+set nowritebackup
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
