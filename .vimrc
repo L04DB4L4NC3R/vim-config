@@ -9,17 +9,15 @@ let g:ctrlp_map = '<c-p>'
 let g:ctrlp_working_path_mode = 0
 let g:go_def_mode = "gopls"  
  
-" TODO: coc YouCompleteMe autocomplete -> ./install.py --go-completer
- 
 " Switch mouse on
 set mouse=a 
  
 " Mapping for fast quit without save
 noremap <Backspace> :q<cr>
 noremap <c-h> :q<cr>
-" TODO: noremap gc :GoCallers<cr>
-" TODO: noremap gi :GoImplements<cr>
-" TODO: noremap gr :GoReferrers<cr>
+" noremap gc :GoCallers<cr>
+" noremap gi :GoImplements<cr>
+" noremap gr :GoReferrers<cr>
 noremap ff :lnext<cr>
 noremap fb :lprev<cr>
 noremap fc :cclose<cr> :lclose<cr>
@@ -50,14 +48,12 @@ set bg=dark
 " colorscheme dracula
  
 " -- Open GoDef in different pane
-" TODO: cnoreabbrev gd GoDef
+" cnoreabbrev gd GoDef
  
 function SplitAndDef()
 				split | :GoDef
 				return 0
 endfunction 
- 
-noremap <NUL> :call SplitAndDef()<CR>
  
 " For cplouring the terminal
 " This enables vim airline
@@ -255,3 +251,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+"inoremap <silent><expr> <NUL> coc#refresh()
+" in coc, write a function, then tab to select definition
+" then <c-space> to enter SELECT mode. Fill args and <c-j> to move to next arg
+inoremap <NUL> <Right>
