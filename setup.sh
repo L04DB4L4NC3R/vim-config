@@ -13,4 +13,4 @@ fi
 cd ~/.vim/pack/syntax/start
 curl --fail -L https://github.com/neoclide/coc.nvim/archive/release.tar.gz | tar xzfv -
 # npm install coc-snippets --global-style --ignore-scripts --no-bin-links --no-package-lock --only=prod
-# vim +'CocInstall coc-go coc-pyright' +qall
+# vim +'CocInstall coc-go coc-pyright coc-snippets' +qall
