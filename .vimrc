@@ -278,3 +278,13 @@ nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
 
 noremap <c-x> :term<cr>
+
+
+" Symbol renaming.
+nmap <leader>a <Plug>(coc-codeaction)
+nmap <leader>r <Plug>(coc-rename)
+
+augroup Format
+    autocmd FileType go,js
+        \ autocmd! Format BufWritePre <buffer> call CocAction('format')
+augroup END
