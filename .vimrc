@@ -255,3 +255,26 @@ nmap <silent> gr <Plug>(coc-references)
 " in coc, write a function, then tab to select definition
 " then <c-space> to enter SELECT mode. Fill args and <c-j> to move to next arg
 inoremap <NUL> <Right>
+
+let g:user_emmet_leader_key='\'
+let g:user_emmet_settings = {
+  \  'javascript.jsx' : {
+    \      'extends' : 'jsx',
+    \  },
+  \}
+
+set wildignore=node_modules
+
+" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
+" delays and poor user experience.
+set updatetime=300
+
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+set signcolumn=yes
+
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+noremap <c-x> :term<cr>
