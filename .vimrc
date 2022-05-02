@@ -284,7 +284,24 @@ noremap <c-x> :term<cr>
 nmap <leader>a <Plug>(coc-codeaction)
 nmap <leader>r <Plug>(coc-rename)
 
+
+function Format()
+	if CocAction('hasProvider', 'format')
+		call CocAction('format')
+	endif
+endfunction
+
 augroup Format
-    autocmd FileType go,js
-        \ autocmd! Format BufWritePre <buffer> call CocAction('format')
+    autocmd FileType *
+        \ autocmd! Format BufWritePre <buffer> call Format()
 augroup END
+
+function! s:show_documentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+
+nnoremap <silent> K :call <SID>show_documentation()<CR>
