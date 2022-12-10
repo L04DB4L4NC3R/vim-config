@@ -3,5 +3,7 @@
     "preferences": {
       "useQuickfixForLocations": true
     }
-  }
+  },
+  "snippets.ultisnips.pythonPrompt": false,
+  "suggest.noselect": true
 }
