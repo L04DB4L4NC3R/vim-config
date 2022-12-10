@@ -213,11 +213,11 @@ let g:ctrlp_mruf_max = 100
 " :.w !bash
  
 " debugging controls
-nnoremap <F5> :GoDebugStart<CR>
-nnoremap <F2> :GoDebugBreakpoint<CR>
-nnoremap <F3> :GoDebugContinue<CR>
-nnoremap <F6> :GoDebugStep<CR>
-nnoremap <F7> :GoDebugStepOut<CR>
+" nnoremap <F5> :GoDebugStart<CR>
+" nnoremap <F2> :GoDebugBreakpoint<CR>
+" nnoremap <F3> :GoDebugContinue<CR>
+" nnoremap <F6> :GoDebugStep<CR>
+" nnoremap <F7> :GoDebugStepOut<CR>
  
 " syntax highlighting does not break in huge files:
 " set redrawtime=1000
@@ -263,7 +263,8 @@ let g:user_emmet_settings = {
     \  },
   \}
 
-set wildignore=node_modules
+set wildignore+=**node_modules/**
+set wildignore+=**build/**
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -292,7 +293,7 @@ function Format()
 endfunction
 
 augroup Format
-    autocmd FileType *
+    autocmd FileType javascript,typescript
         \ autocmd! Format BufWritePre <buffer> call Format()
 augroup END
 
@@ -305,3 +306,25 @@ function! s:show_documentation()
 endfunction
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+nnoremap <leader>s :CocList symbols<CR>
+
+"let g:toggle_autoformat_on_save = 1;
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+let g:vimspector_install_gadgets = [ 'debugpy', 'vscode-go', 'CodeLLDB', 'vscode-node-debug2', 'delve' ]
+let g:vimspector_enable_mappings = 'HUMAN'
+
+nmap <leader>e <Plug>VimspectorBalloonEval
+xmap <leader>e <Plug>VimspectorBalloonEval
+nmap <F4> <Plug>VimspectorToggleBreakpoint
+nmap <F2> :VimspectorReset<CR>
+
+let g:vimspector_code_minheight = 90
