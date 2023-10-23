@@ -38,6 +38,8 @@ colorscheme gruvbox-material
 " colorscheme nord
 " colorscheme aquarium
 " colorscheme gruvbox
+" set background=light
+" colorscheme parchment
 " colorscheme onedark
 set bg=dark
 " -- for transparency
@@ -102,6 +104,7 @@ noremap + <c-w>:10winc+<CR>
 "map <s-j> <c-w><
 "map <s-;> <c-w>>
  
+noremap <c-t> <c-o>
 noremap <c-o> :split<CR>
 noremap <c-e> :vsplit<CR>
  
@@ -144,6 +147,7 @@ noremap '' :wq<CR>
  
 noremap <leader>l :tab term ++close lazygit<CR>
 noremap <leader>t :tab term ++close<CR>
+noremap <leader>c :tab term zsh -c chatgpt ++close<CR>
  
 " let g:vimspector_enable_mappings = 'HUMAN'
  
@@ -194,7 +198,6 @@ set wildmenu
 " disables the annoying preview window in a scratch split
 set completeopt-=preview
  
-nnoremap <leader>s :CtrlPLine<CR>
 "autocmd FileType php,go argadd **
  
 " :set noeol binary ----> removes newline from the end of the file
@@ -229,7 +232,7 @@ let g:ctrlp_mruf_max = 100
 set colorcolumn=100
  
 " Locate current file in nerdtree
-nnoremap <leader>f :NERDTreeFind<CR>
+nnoremap <leader>F :NERDTreeFind<CR>
  
 " One trick I like to use a lot is to search for the current word under the cursor in the files. I first press * so that the word is selected. Then I use this empty pattern to search for it: :vim // *.cpp
  
@@ -289,9 +292,12 @@ function Format()
 endfunction
 
 augroup Format
-    autocmd FileType javascript,typescript
+    autocmd FileType javascript,typescript,go,python
         \ autocmd! Format BufWritePre <buffer> call Format()
 augroup END
+
+autocmd BufWritePre *.javascript,*.typescript,*.go,*.py,*.js,*.ts :silent call CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR   :silent call CocAction('runCommand', 'editor.action.organizeImport')
 
 function! s:show_documentation()
   if CocAction('hasProvider', 'hover')
@@ -325,18 +331,10 @@ nmap <F2> :VimspectorReset<CR>
 
 let g:vimspector_code_minheight = 90
 
-function! CheckBackSpace() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
+let g:coc_snippet_next = '\'
 
-let g:coc_snippet_next = '<tab>'
-
-let @f='di(:new
-p:%s/,/,\r/g
-A,ggdG:q!
-ja
-lopldd'
+let @f='di(:newp:%s/,/,\r/gA,ggdG:q!jalopldd'
+let @b='/returnk3k2=k2k9'
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
@@ -353,3 +351,39 @@ inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 " <C-g>u breaks current undo, please make your own choice.
 inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+xmap if <Plug>(coc-funcobj-i)
+omap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap af <Plug>(coc-funcobj-a)
+xmap ic <Plug>(coc-classobj-i)
+omap ic <Plug>(coc-classobj-i)
+xmap ac <Plug>(coc-classobj-a)
+omap ac <Plug>(coc-classobj-a)
+
+noremap [[ ?func / [a-zA-Z]<right>; <CR>
+noremap ]] /func / [a-zA-Z]<right>; <CR>
+
+set runtimepath+=/Users/angadsharma/.vim/pack/syntax/start/vim-addon-manager
+call vam#ActivateAddons(['vim-snippets','snipmate'])
+let g:snipMate = { 'snippet_version' : 1 }
+
+" NOTE: coc-list required
+
+" grep word under cursor
+command! -nargs=+ -complete=custom,s:GrepArgs Rg exe 'CocList grep '.<q-args>
+
+function! s:GrepArgs(...)
+  let list = ['-S', '-smartcase', '-i', '-ignorecase', '-w', '-word',
+        \ '-e', '-regex', '-u', '-skip-vcs-ignores', '-t', '-extension']
+  return join(list, "\n")
+endfunction
+
+" Keymapping for grep word under cursor with interactive mode
+" nnoremap <silent> <Leader>f :exe 'CocList -I --input='.expand('<cword>').' grep'<CR>
+" Keymapping for grep with interactive mode
+nnoremap <silent> <Leader>f :exe 'CocList -I --input='.expand('').' grep'<CR>
